@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sqlite3
+import adddrink
 dbfile2 = sqlite3.connect('zibunnkannri.db')
 c = dbfile2.cursor()
 """
@@ -78,7 +79,7 @@ class Zihan:
                     self.editcommnd = int(input("1か2か3で選んで下さい"))
 
                     if self.editcommnd == 1:
-                        zihann.addrink()
+                        zuhan.addrink()
                         zihann.menu()
 
                     elif self.editcommnd == 2:
@@ -103,32 +104,7 @@ class Zihan:
 
 
 
-    def addrink(self):
-        c.execute("select * from zihannkicount")
-        o = c.fetchall()
-        for i in o:
-            print("{}:{}本".format(i[0], i[1]))
-        repetition = None
-        while repetition == None:
-            self.add = str(input("どの飲み物を追加しますか？"))
-            c.execute("select * from zihannkicount where drinkkind = ? ", (self.add,))
-            m = c.fetchone()
-            #print("m = {}".format(m))
-            if m == None:
-                print("入力した飲み物は存在しません。")
-            else:
-                repetition2 = None
-                while repetition2 == None:
-                    try:
-                        count = int(input("何本追加しますか？"))
-                        newcount = m[1]
-                        newcount = newcount + count
-                        c.execute("update zihannkicount set buycount=? where drinkkind=?", (newcount, self.add))
-                        print("{}が{}本になりました。".format(self.add,newcount))
-                        repetition = 1
-                        repetition2 = 1
-                    except ValueError:
-                        print("数値を入力してください。")
+
 
     def addkind(self):
         self.newkind = str(input("なんという飲み物を追加しますか？"))
