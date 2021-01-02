@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sqlite3
-import adddrink
+from adddrink import *
 dbfile2 = sqlite3.connect('zibunnkannri.db')
 c = dbfile2.cursor()
 """
@@ -79,7 +79,7 @@ class Zihan:
                     self.editcommnd = int(input("1か2か3で選んで下さい"))
 
                     if self.editcommnd == 1:
-                        zuhan.addrink()
+                        zihann.addrink()
                         zihann.menu()
 
                     elif self.editcommnd == 2:
@@ -101,8 +101,6 @@ class Zihan:
                     print("1か2か3で選んで下さい。")
             except ValueError:
                 print("数値で入力してください。")
-
-
 
 
 
