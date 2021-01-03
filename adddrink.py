@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
 import sqlite3
-import zihannki_sql
 dbfile2 = sqlite3.connect('zibunnkannri.db')
 c = dbfile2.cursor()
 
-class Addrinking(Zihan):
+class Addrinking():
 
     def addrink(self):
         c.execute("select * from zihannkicount")
         o = c.fetchall()
+        #print("これはデバック{}".format(o))
         for i in o:
             print("{}:{}本".format(i[0], i[1]))
         repetition = None
@@ -33,10 +33,8 @@ class Addrinking(Zihan):
                         repetition2 = 1
                     except ValueError:
                         print("数値を入力してください。")
-
-addrinking = Addrinking()
-
-addrinking.addrink()
+#addrinking = Addrinking()
+#addrinking.addrink()
 
 dbfile2.commit()
 dbfile2.close()
