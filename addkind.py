@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sqlite3
+import sqlite3
 dbfile2 = sqlite3.connect('zibunnkannri.db')
 c = dbfile2.cursor()
 
