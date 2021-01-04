@@ -2,10 +2,11 @@
 import os
 import sqlite3
 import os
-dbfile2 = sqlite3.connect('zibunnkannri.db')
-c = dbfile2.cursor()
+
 
 class Zihan:
+
+
     def __init__(self):
         self.kin = None
         self.zyusu = {}
@@ -42,17 +43,21 @@ class Zihan:
         self.g = None
         self.sagaku2 = None
         self.endmessage = None
+        self.control = None
 
     def say_nomitaimono(self):
+        dbfile2 = sqlite3.connect('zibunnkannri.db')
+        c = dbfile2.cursor()
         c.execute("select drinkkind,price from zihannkicount")
         p = c.fetchall()
         # print("p = {}".format(p))
+        self.control = None
+        while self.control == None:
+            for redict in p:
+                self.zyusu[redict[0]] = redict[1]
+                # print("これはデバック{}".format(self.zyusu))
+                print("{}:{}円".format(redict[0], redict[1]))
 
-        for redict in p:
-            self.zyusu[redict[0]] = redict[1]
-            # print("これはデバック{}".format(self.zyusu))
-            print("{}:{}円".format(redict[0], redict[1]))
-        while True:
             self.kin = str(input("飲みたい物を入力してください"))
 
             if self.kin in self.zyusu:
@@ -72,62 +77,64 @@ class Zihan:
                                 self.someprice = self.b * self.countdrink
                                 print("合計金額は{}円になります。".format(self.someprice))
                                 break
+
                             else:
                                 print("申し訳ございません。在庫切れです。")
                         except ValueError:
                             print("数値で入力してください。")
+                    self.control2 = None
+                    while self.control2 == None:
+                        try:
+                            self.kig = int(input("お金を投入してください"))
+                            self.realprice = int(self.zyusu[self.kin]) * int(self.countdrink)
+                            # print("これはデバックrealprice = {}".format(self.realprice))
 
-                        while True:
-                            try:
-                                self.kig = int(input("お金を投入してください"))
-                                self.realprice = int(self.zyusu[self.kin]) * int(self.countdrink)
-                                # print("これはデバックrealprice = {}".format(self.realprice))
-
-                                if int(self.realprice) <= self.kig:
-                                    self.oturi = self.kig - self.realprice
-                                    if self.oturi == 0:
-                                        print("お釣りは有りません")
-                                        self.f = int(self.d[1]) - int(self.countdrink)
-                                        c.execute("update zihannkicount set buycount=? where drinkkind=?",
-                                                  (self.f, self.kin))
-                                        c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
-                                        self.g = c.fetchone()
-                                        # print("これはデバックself.g = {}".format(self.g))
-                                        self.h = int(self.g[1]) + int(self.countdrink)
-                                        c.execute("update mydrinkcount set buycount=? where drinkkind=?",
-                                                  (self.h, self.kin))
-                                        c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
-                                        self.i = c.fetchone()
-                                        print("{0}の購入数はこれで{1}本目です".format(self.kin, self.i[1]))
-                                        break
-                                    else:
-                                        print("お釣りは{}".format(self.oturi))
-                                        self.f = int(self.d[1]) - int(self.countdrink)
-                                        c.execute("update zihannkicount set buycount=? where drinkkind=?",(self.f, self.kin))
-                                        c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
-                                        self.g = c.fetchone()
-                                        self.h = int(self.g[1]) + int(self.countdrink)
-                                        c.execute("update mydrinkcount set buycount=? where drinkkind=?",(self.h, self.kin))
-                                        c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
-                                        self.i = c.fetchone()
-                                        print("{0}の購入数はこれで{1}個目です".format(self.kin, self.i[1]))
-                                        break
+                            if int(self.realprice) <= self.kig:
+                                self.oturi = self.kig - self.realprice
+                                if self.oturi == 0:
+                                    print("お釣りは有りません")
+                                    self.f = int(self.d[1]) - int(self.countdrink)
+                                    c.execute("update zihannkicount set buycount=? where drinkkind=?",(self.f, self.kin))
+                                    c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
+                                    self.g = c.fetchone()
+                                    # print("これはデバックself.g = {}".format(self.g))
+                                    self.h = int(self.g[1]) + int(self.countdrink)
+                                    c.execute("update mydrinkcount set buycount=? where drinkkind=?",(self.h, self.kin))
+                                    c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
+                                    self.i = c.fetchone()
+                                    print("{0}の購入数はこれで{1}本目です".format(self.kin, self.i[1]))
+                                    self.control = 1
+                                    self.control2 = 1
                                 else:
-                                    self.sagaku = int(self.realprice) - int(self.kig)
-                                    # self.sagaku2 = str(self.sagaku)
-                                    print("お金が{}円足りません。".format(self.sagaku))
+                                    print("お釣りは{}".format(self.oturi))
+                                    self.f = int(self.d[1]) - int(self.countdrink)
+                                    c.execute("update zihannkicount set buycount=? where drinkkind=?",(self.f, self.kin))
+                                    c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
+                                    self.g = c.fetchone()
+                                    self.h = int(self.g[1]) + int(self.countdrink)
+                                    c.execute("update mydrinkcount set buycount=? where drinkkind=?",(self.h, self.kin))
+                                    c.execute("select * from mydrinkcount where drinkkind = ?", (self.kin,))
+                                    self.i = c.fetchone()
+                                    print("{0}の購入数はこれで{1}個目です".format(self.kin, self.i[1]))
+                                    self.control = 1
+                                    self.control2 = 1
+                            else:
+                                self.sagaku = int(self.realprice) - int(self.kig)
+                                # self.sagaku2 = str(self.sagaku)
+                                print("お金が{}円足りません。".format(self.sagaku))
 
-                            except ValueError:
-                                print("数値で入力してください")
+                        except ValueError:
+                            print("数値で入力してください")
                 else:
                     print("在庫数が足りません。")
             else:
                 print("在庫がありません")
 
-            self.modoru = None
-            while self.modoru == None:
+        self.modoru = None
+        while self.modoru == None:
+            try:
 
-                self.yesno = input("購入を続けますか？yesかnoで入力して下さい。")
+                self.yesno = str(input("購入を続けますか？yesかnoで入力して下さい。"))
 
                 if self.yesno == "yes":
                     os.system('clear')
@@ -136,11 +143,13 @@ class Zihan:
                 elif self.yesno == "no":
                     print("お疲れ様でした")
                     self.modoru = 1
-                    break
 
                 else:
                     print("yesかnoで入力して下さい")
 
+            except ValueError:
+                print("yesかnoで入力して下さい")
 
-dbfile2.commit()
-dbfile2.close()
+
+        dbfile2.commit()
+        dbfile2.close()

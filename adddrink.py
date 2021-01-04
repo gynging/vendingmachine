@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import os
 import sqlite3
-dbfile2 = sqlite3.connect('zibunnkannri.db')
-c = dbfile2.cursor()
+
 
 class Addrinking():
 
     def addrink(self):
+        dbfile2 = sqlite3.connect('zibunnkannri.db')
+        c = dbfile2.cursor()
         c.execute("select * from zihannkicount")
         o = c.fetchall()
         #print("これはデバック{}".format(o))
@@ -33,8 +34,6 @@ class Addrinking():
                         repetition2 = 1
                     except ValueError:
                         print("数値を入力してください。")
-#addrinking = Addrinking()
-#addrinking.addrink()
 
-dbfile2.commit()
-dbfile2.close()
+        dbfile2.commit()
+        dbfile2.close()

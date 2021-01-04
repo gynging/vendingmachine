@@ -2,12 +2,13 @@
 import os
 import sqlite3
 import sqlite3
-dbfile2 = sqlite3.connect('zibunnkannri.db')
-c = dbfile2.cursor()
+
 
 class Addkinding():
 
     def addkind(self):
+        dbfile2 = sqlite3.connect('zibunnkannri.db')
+        c = dbfile2.cursor()
         self.newkind = str(input("なんという飲み物を追加しますか？"))
         repetition3 = None
         while repetition3 == None:
@@ -23,8 +24,6 @@ class Addkinding():
                 repetition3 = 1
             except ValueError:
                 print("数値で入力してください")
-#addkinding = Addkinding()
-#addkinding.addkind()
 
-dbfile2.commit()
-dbfile2.close()
+        dbfile2.commit()
+        dbfile2.close()

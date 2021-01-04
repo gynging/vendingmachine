@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 import os
 import sqlite3
-dbfile2 = sqlite3.connect('zibunnkannri.db')
-c = dbfile2.cursor()
+
 
 class Editing():
 
     def editdrinking(self):
+        dbfile2 = sqlite3.connect('zibunnkannri.db')
+        c = dbfile2.cursor()
         c.execute("select * from zihannkicount")
         p = c.fetchall()
         # print("p = {}".format(p))
@@ -27,5 +28,5 @@ class Editing():
 #editing = Editing()
 #editing.editdrinking()
 
-dbfile2.commit()
-dbfile2.close()
+        dbfile2.commit()
+        dbfile2.close()
