@@ -4,15 +4,20 @@ import sqlite3
 
 
 class Editing():
+    def __init__(self):
+        self.zyusuall = {}
 
     def editdrinking(self):
         dbfile2 = sqlite3.connect('zibunnkannri.db')
         c = dbfile2.cursor()
         c.execute("select * from zihannkicount")
         p = c.fetchall()
-        # print("p = {}".format(p))
+        #print("debag:p = {}".format(p))
         for i in p:
-            print(i)
+            #print("これはデバック{}".format(i))
+            self.zyusuall[i[0]] = i[2]
+            print("{}:{}円".format(i[0], i[2]))
+
         while True:
             self.deletedrink = str(input("なんという飲み物を消去しますか？"))
             c.execute("select * from zihannkicount where drinkkind = ? ", (self.deletedrink,))

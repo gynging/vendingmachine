@@ -50,12 +50,12 @@ class Zihan:
         c = dbfile2.cursor()
         c.execute("select drinkkind,price from zihannkicount")
         p = c.fetchall()
-        # print("p = {}".format(p))
+        #print("これはデバッグp = {}".format(p))
         self.control = None
         while self.control == None:
                 for redict in p:
                     self.zyusu[redict[0]] = redict[1]
-                    # print("これはデバック{}".format(self.zyusu))
+                    #print("これはデバック{}".format(self.zyusu))
                     print("{}:{}円".format(redict[0], redict[1]))
 
                 self.kin = str(input("飲みたい物を入力してください"))
@@ -105,8 +105,10 @@ class Zihan:
                                         print("{0}の購入数はこれで{1}本目です".format(self.kin, self.i[1]))
                                         self.control2 = 1
                                         self.control = 1
+                                        dbfile2.commit()
                                         zihann = Zihan()
                                         zihann.back()
+
 
                                     else:
                                         print("お釣りは{}".format(self.oturi))
@@ -121,6 +123,7 @@ class Zihan:
                                         print("{0}の購入数はこれで{1}個目です".format(self.kin, self.i[1]))
                                         self.control2 = 1
                                         self.control = 1
+                                        dbfile2.commit()
                                         zihann = Zihan()
                                         zihann.back()
 
@@ -135,11 +138,9 @@ class Zihan:
                         print("在庫数が足りません。")
                 else:
                     print("在庫がありません")
-        dbfile2.commit()
 
     def back(self):
-        dbfile2 = sqlite3.connect('zibunnkannri.db')
-        c = dbfile2.cursor()
+
         self.modoru = None
         while self.modoru == None:
             try:
@@ -147,13 +148,11 @@ class Zihan:
 
                 if self.yesno == "yes":
                     self.modoru = 1
-                    zihann = Zihan()
-                    zihann.say_nomitaimono()
+                    self.say_nomitaimono()
 
                 elif self.yesno == "no":
                     print("お疲れ様でした")
                     self.modoru = 1
-                    dbfile2.close()
 
                 else:
                     print("yesかnoで入力して下さい")
